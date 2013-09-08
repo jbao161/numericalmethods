@@ -22,7 +22,10 @@ int hw02_main() {
     }
     // exercise 2.5
     // legendre polynomial, n = 8: 0.2734375 - 9.84375x^2.0 + 54.140625x^4.0 - 93.84375x^6.0 + 50.2734375x^8.0
-    if (true) {
+    if (false) {
+        lowerBound = 0;
+        upperBound = 0.2;
+        solution = bisect(l8, lowerBound, upperBound, max_iter, TOL);
         double guess = 0.2;
         solution = newtonsolve(l8, l8deriv, guess, max_iter, TOL); // solution: 0.1834346424796
     }
