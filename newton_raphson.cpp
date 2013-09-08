@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   newton_raphson.cpp
  * Author: jbao
  *
@@ -19,20 +19,25 @@ const bool DEBUG = true;
  * @param initial_guess an approximation to the solution we are trying to find
  * @param max_iter maximum number of iterations allowed
  * @param TOL the maximum error term allowed for convergence
- * @return 
+ * @return
  */
-double newtonsolve(double (*function)(double), double (*fderivative)(double), double initial_guess, int max_iter, double TOL) {
+double newtonsolve(double (*function)(double), double (*fderivative)(double), double initial_guess, int max_iter, double TOL)
+{
     double f_x, derivative, next_guess;
     double convergence_criterion = DBL_MAX; // the relative distance between successive approximations
-    if (DEBUG) {
+    if (DEBUG)
+    {
         printf("\r\nNewton-Raphson search:\r\n");
     }
     // search for the solution using Newton-Raphson method
-    for (int i = 0; i <= max_iter; i++) { // i<= maxIter because results of nth iteration are not checked until the n+1th
+    for (int i = 0; i <= max_iter; i++)   // i<= maxIter because results of nth iteration are not checked until the n+1th
+    {
         f_x = function(initial_guess);
         // check if the function at the initial guess is sufficiently close to zero
-        if (f_x == 0 || convergence_criterion < TOL) {
-            if (DEBUG) {
+        if (f_x == 0 || convergence_criterion < TOL)
+        {
+            if (DEBUG)
+            {
                 printf("after %i iterations\r\n", i); // if initial guess is the solution, i=0
                 printf("solution: %3.12f\r\n", initial_guess);
                 printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess));
@@ -41,8 +46,10 @@ double newtonsolve(double (*function)(double), double (*fderivative)(double), do
         }
         // otherwise calculate the derivative at the initial guess.
         derivative = fderivative(initial_guess);
-        if (derivative == 0) { // verify that the derivative is nonzero
-            if (DEBUG) {
+        if (derivative == 0)   // verify that the derivative is nonzero
+        {
+            if (DEBUG)
+            {
                 printf("derivative at: %3.12f equals zero. Divide by zero error!\r\n", initial_guess);
             }
             return DBL_MAX; // cannot find a root due to divide by zero error!
@@ -53,7 +60,8 @@ double newtonsolve(double (*function)(double), double (*fderivative)(double), do
         initial_guess = next_guess;
     }
     // unsuccessful search
-    if (DEBUG) {
+    if (DEBUG)
+    {
         printf("Method failed after %i iterations\r\n", max_iter);
         printf("inadequate solution: %3.12f with a tolerance of %3.12f\r\n", initial_guess, convergence_criterion);
         printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess));

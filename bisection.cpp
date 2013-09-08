@@ -1,5 +1,5 @@
 
-/* 
+/*
  * File:   bisection.cpp
  * Author: jbao
  *
@@ -13,7 +13,8 @@ using namespace std;
 
 const bool DEBUG = true;
 
-bool isFiniteNumber(double x) {
+bool isFiniteNumber(double x)
+{
     return (x <= DBL_MAX && x >= -DBL_MAX);
 }
 
@@ -24,9 +25,10 @@ bool isFiniteNumber(double x) {
  * @param upperBound an upper bound to the root we are trying to find
  * @param max_iter maximum number of iterations allowed
  * @param TOL the maximum error term allowed for convergence
- * @return 
+ * @return
  */
-double bisect(double (*function)(double), double lowerBound, double upperBound, int max_iter, double TOL) {
+double bisect(double (*function)(double), double lowerBound, double upperBound, int max_iter, double TOL)
+{
     double midpoint, prevMidpoint;
     double precision; // length of the interval containing solution
     double convergence_criterion; // size of interval divided by the midpoint
@@ -35,20 +37,24 @@ double bisect(double (*function)(double), double lowerBound, double upperBound, 
     double functionTop = function(upperBound);
 
     // verify that inputs are in fact the lower and upper bound of the solution
-    if (DEBUG) {
+    if (DEBUG)
+    {
         printf("\r\nBisection search:\r\n");
         printf("f(%3.2f) = %3.2f\r\n", lowerBound, functionBot);
         printf("f(%3.2f) = %3.2f\r\n", upperBound, functionTop);
     }
     // function must be defined at the bounds, and its values must be of opposite sign
-    if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop)) {
-        if (DEBUG) {
+    if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop))
+    {
+        if (DEBUG)
+        {
             printf("invalid inputs: function must be defined at the bounds, and its values must be of opposite sign\r\n");
         }
         return DBL_MAX; // cannot find a root because of invalid inputs
     }
     // search for the solution using bisection method
-    for (int i = 0; i < max_iter;) {
+    for (int i = 0; i < max_iter;)
+    {
         // compute midpoint and f(midpoint)
         midpoint = (upperBound + lowerBound) / 2;
         functionMidpoint = function(midpoint);
@@ -58,8 +64,10 @@ double bisect(double (*function)(double), double lowerBound, double upperBound, 
         convergence_criterion = abs(precision / midpoint);
 
         // check if the function at the midpoint is sufficiently close to zero
-        if (functionMidpoint == 0 || convergence_criterion < TOL) {
-            if (DEBUG) {
+        if (functionMidpoint == 0 || convergence_criterion < TOL)
+        {
+            if (DEBUG)
+            {
                 printf("after %i iterations\r\n", i + 1);
                 printf("solution: %3.12f, with precision +/- %3.12f\r\n", midpoint, precision / 2);
                 printf("f(%3.12f) = %3.12f\r\n", midpoint, function(midpoint));
@@ -71,17 +79,21 @@ double bisect(double (*function)(double), double lowerBound, double upperBound, 
         i++;
         prevMidpoint = midpoint;
         // bisect the interval and determine which half contains the solution
-        if (signbit(functionBot) == signbit(functionMidpoint)) {
+        if (signbit(functionBot) == signbit(functionMidpoint))
+        {
             // use the upper subinterval
             lowerBound = midpoint;
             functionBot = functionMidpoint;
-        } else {
+        }
+        else
+        {
             // use the lower subinterval
             upperBound = midpoint;
         }
     }
     // unsuccessful search
-    if (DEBUG) {
+    if (DEBUG)
+    {
         printf("Method failed after %i iterations\r\n", max_iter);
         printf("inadequate solution: %3.12f within an interval of length %3.12f\r\n", midpoint, precision);
         printf("f(%3.12f) = %3.12f\r\n", midpoint, function(midpoint));
@@ -90,7 +102,7 @@ double bisect(double (*function)(double), double lowerBound, double upperBound, 
 }
 
 /*
- * comments: 
+ * comments:
  * 1. convergence criterion is size of interval containing solution divide by approximate solution
  * 2. this is basically an application of the mean value theorem using some continuous function and exploiting the fact that a solution to f = 0 will exist between a and b, provided that f(a) < 0 and f(b) > 0 both exist.
  * 3. we need to solve f=0, because the algorithm relies on positive/negative sign checking to determine which interval contains the solution
@@ -101,10 +113,13 @@ double bisect(double (*function)(double), double lowerBound, double upperBound, 
  * 8. cannot find a solution if the function only touches the line y=0, but doesn't cross!
  */
 
-double bisect_r(double (*function)(double), double lowerBound, double upperBound, int current_iter, int max_iter, double TOL) {
+double bisect_r(double (*function)(double), double lowerBound, double upperBound, int current_iter, int max_iter, double TOL)
+{
     // unsuccessful search
-    if (current_iter > max_iter) {
-        if (DEBUG) {
+    if (current_iter > max_iter)
+    {
+        if (DEBUG)
+        {
             printf("Method failed after %i iterations\r\n", max_iter);
         }
         return DBL_MAX; // cannot find a root because exceeded max iterations
@@ -120,8 +135,10 @@ double bisect_r(double (*function)(double), double lowerBound, double upperBound
 
 
     // function must be defined at the bounds, and its values must be of opposite sign
-    if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop)) {
-        if (DEBUG) {
+    if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop))
+    {
+        if (DEBUG)
+        {
             printf("invalid inputs: function must be defined at the bounds, and its values must be of opposite sign\r\n");
         }
         return DBL_MAX; // cannot find a root because of invalid inputs
@@ -136,8 +153,10 @@ double bisect_r(double (*function)(double), double lowerBound, double upperBound
     convergence_criterion = abs(precision / midpoint);
 
     // check if the function at the midpoint is sufficiently close to zero
-    if (functionMidpoint == 0 || convergence_criterion < TOL) {
-        if (DEBUG) {
+    if (functionMidpoint == 0 || convergence_criterion < TOL)
+    {
+        if (DEBUG)
+        {
             printf("after %i iterations\r\n", current_iter);
             printf("solution: %3.12f, with precision +/- %3.12f\r\n", midpoint, precision / 2);
             printf("f(%3.12f) = %3.12f\r\n", midpoint, function(midpoint));
@@ -147,16 +166,20 @@ double bisect_r(double (*function)(double), double lowerBound, double upperBound
 
     // otherwise continue searching
     // bisect the interval and determine which half contains the solution
-    if (signbit(functionBot) == signbit(functionMidpoint)) {
+    if (signbit(functionBot) == signbit(functionMidpoint))
+    {
         // use the upper subinterval
         return bisect_r(function, midpoint, upperBound, current_iter + 1, max_iter, TOL);
-    } else {
+    }
+    else
+    {
         // use the lower subinterval
         return bisect_r(function, lowerBound, midpoint, current_iter + 1, max_iter, TOL);
     }
 }
 
-double bisect_params(double (*function)(double, double*), double *params, double lowerBound, double upperBound, int max_iter, double TOL) {
+double bisect_params(double (*function)(double, double*), double *params, double lowerBound, double upperBound, int max_iter, double TOL)
+{
     double midpoint, prevMidpoint;
     double precision; // length of the interval containing solution
     double convergence_criterion; // size of interval divided by the midpoint
@@ -165,20 +188,24 @@ double bisect_params(double (*function)(double, double*), double *params, double
     double functionTop = function(upperBound,params);
 
     // verify that inputs are in fact the lower and upper bound of the solution
-    if (DEBUG) {
+    if (DEBUG)
+    {
         printf("\r\nBisection search:\r\n");
         printf("f(%3.2f) = %3.2f\r\n", lowerBound, functionBot);
         printf("f(%3.2f) = %3.2f\r\n", upperBound, functionTop);
     }
     // function must be defined at the bounds, and its values must be of opposite sign
-    if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop)) {
-        if (DEBUG) {
+    if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop))
+    {
+        if (DEBUG)
+        {
             printf("invalid inputs: function must be defined at the bounds, and its values must be of opposite sign\r\n");
         }
         return DBL_MAX; // cannot find a root because of invalid inputs
     }
     // search for the solution using bisection method
-    for (int i = 0; i < max_iter;) {
+    for (int i = 0; i < max_iter;)
+    {
         // compute midpoint and f(midpoint)
         midpoint = (upperBound + lowerBound) / 2;
         functionMidpoint = function(midpoint,params);
@@ -188,8 +215,10 @@ double bisect_params(double (*function)(double, double*), double *params, double
         convergence_criterion = abs(precision / midpoint);
 
         // check if the function at the midpoint is sufficiently close to zero
-        if (functionMidpoint == 0 || convergence_criterion < TOL) {
-            if (DEBUG) {
+        if (functionMidpoint == 0 || convergence_criterion < TOL)
+        {
+            if (DEBUG)
+            {
                 printf("after %i iterations\r\n", i + 1);
                 printf("solution: %3.12f, with precision +/- %3.12f\r\n", midpoint, precision / 2);
                 printf("f(%3.12f) = %3.12f\r\n", midpoint, function(midpoint,params));
@@ -201,17 +230,21 @@ double bisect_params(double (*function)(double, double*), double *params, double
         i++;
         prevMidpoint = midpoint;
         // bisect the interval and determine which half contains the solution
-        if (signbit(functionBot) == signbit(functionMidpoint)) {
+        if (signbit(functionBot) == signbit(functionMidpoint))
+        {
             // use the upper subinterval
             lowerBound = midpoint;
             functionBot = functionMidpoint;
-        } else {
+        }
+        else
+        {
             // use the lower subinterval
             upperBound = midpoint;
         }
     }
     // unsuccessful search
-    if (DEBUG) {
+    if (DEBUG)
+    {
         printf("Method failed after %i iterations\r\n", max_iter);
         printf("inadequate solution: %3.12f within an interval of length %3.12f\r\n", midpoint, precision);
         printf("f(%3.12f) = %3.12f\r\n", midpoint, function(midpoint,params));

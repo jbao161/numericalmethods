@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   polynomial.h
  * Author: jbao
  *
@@ -15,7 +15,8 @@
 #include <math.h>
 using namespace std;
 
-class Polynomial {
+class Polynomial
+{
 public:
     map<double, double> polyCoefs;
     void set(double*, int);

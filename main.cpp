@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   main.cpp
  * Author: jbao
  *
@@ -11,9 +11,10 @@
 using namespace std;
 
 /*
- * 
+ *
  */
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     hw02_main();
     return 0;
 }
