@@ -21,7 +21,7 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=Cygwin_4.x-Windows
+CND_PLATFORM=Cygwin-Windows
 CND_DLIB_EXT=dll
 CND_CONF=Debug
 CND_DISTDIR=dist
@@ -44,7 +44,7 @@ OBJECTFILES= \
 
 
 # C Compiler Flags
-CFLAGS=
+CFLAGS=-ansi -pedantic
 
 # CC Compiler Flags
 CCFLAGS=
@@ -57,11 +57,13 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-L/cygdrive/c/dislin -luser32 -lgdi32 /cygdrive/C/dislin/discyg.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/numericalmethods.exe
+
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/numericalmethods.exe: /cygdrive/C/dislin/discyg.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/numericalmethods.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}

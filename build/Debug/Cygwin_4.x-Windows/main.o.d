@@ -1,3 +1,3 @@
-build/Debug/Cygwin_4.x-Windows/main.o: main.cpp hw02_main.h
+build/Debug/Cygwin_4.x-Windows/main.o: main.cpp dislin.h
 
-hw02_main.h:
+dislin.h:

@@ -43,31 +43,41 @@ int hw02_main()
         double params[3] = {0.3, 1, 10};
         double start = 0;
         double stop = 10;
-        double step = 0.5;
+        double step = 0.1;
+        if (false){
         for (double energy = start; energy < stop; energy += step)
         {
             solution = bc_well_even(energy, params);
             printf("%3.2f\r\n", solution);
         }
+          for (double energy = start; energy < stop; energy += step)
+        {
+            solution = bc_well_odd(energy, params);
+            printf("%3.2f\r\n", energy);
+        }
+        }
+        if (true){
         for (double energy = start; energy < stop; energy += step)
         {
             solution = bc_well_odd(energy, params);
             printf("%3.2f\r\n", solution);
         }
+       
 
 
         // exercise 2.14
         double energy_even = bisect_params(bc_well_even, params, lowerBound, upperBound, max_iter, TOL);
-        lowerBound = 1;
+        lowerBound = 2;
         upperBound = 3;
         double energy_odd = bisect_params(bc_well_odd, params, lowerBound, upperBound, max_iter, TOL);
         double alpha1 = alpha(m, energy_even);
         double beta1 = beta(m, energy_even, v_0);
         double output;
-        for (double i = 0.0; i < 10; i = i + 0.5)
+        for (double i = -10.0; i < 10; i = i + 0.1)
         {
             output = wavefunction_01(i, 0, 1, alpha1, beta1);
             printf("%3.6f\r\n", output);
+        }
         }
     }
     return 0;

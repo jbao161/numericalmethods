@@ -41,7 +41,7 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>../../../../../~Temp/koolplot1_2src</Elem>
+    <Elem>C:/~Temp/koolplot1_2src</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -53,6 +53,22 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <incDir>
+            <pElem>/cygdrive/c/dislin</pElem>
+          </incDir>
+          <commandLine>-ansi -pedantic</commandLine>
+        </cTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>/cygdrive/c/dislin</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibLibItem>user32</linkerLibLibItem>
+            <linkerLibLibItem>gdi32</linkerLibLibItem>
+            <linkerLibFileItem>C:/dislin/discyg.a</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <item path="Polynomial.cpp" ex="false" tool="1" flavor2="0">
       </item>
