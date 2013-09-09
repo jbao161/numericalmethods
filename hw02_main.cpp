@@ -65,7 +65,7 @@ int hw02_main() {
             double energy_odd = bisect_params(bc_well_odd, params, lowerBound, upperBound, max_iter, TOL);
             double alpha = get_alpha(m, energy_even);
             double beta = get_beta(m, v_0, energy_even);
-                     // see what the alpha and beta are
+            // see what the alpha and beta are
             printf("a = %3.2f\r\n", alpha);
             printf("b = %3.2f\r\n", beta);
             // III: C * exp(beta*x) | I: B * cos(alpha*x) | II: C * exp(-beta*x))
@@ -78,7 +78,7 @@ int hw02_main() {
             double B = exp(beta*-a) / cos(alpha*-a);
             printf("If C = 1, then B = %3.2f\r\n", B);
             // now we can sum that integral
-            double integral = 4;
+            double integral = wavefunction_02sqint(a, C, beta);
             printf("If C = 1 and B = %3.2f, then the integral = %3.2f\r\n", B, integral);
             // now normalize the integral to one, i.e. divide the coefficients by the value of the integral
             C /= integral;
