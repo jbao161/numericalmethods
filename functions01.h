@@ -26,6 +26,8 @@ double wavefunction_03(double, double, double);
 double wavefunction_03d(double, double, double);
 double wavefunction_03a(double, double, double);
 double wavefunction_03sqint(double, double, double);
+double get_integral_even(double, double*);
+double get_integral_odd(double, double*);
 
 #endif	/* FUNCTIONS01_H */
 

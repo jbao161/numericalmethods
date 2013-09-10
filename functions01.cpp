@@ -112,3 +112,24 @@ double wavefunction_03a(double x, double D, double beta) {
 double wavefunction_03sqint(double x, double D, double beta) {
     return D * D * 0.5 / beta * exp(2 * beta * x);
 }
+
+double get_integral_even(double C, double *params) {
+    double a = params[0];
+    double m = params[1];
+    double v_0 = params[2];
+    double E = params[3];
+    double beta = sqrt(2 * m * (v_0 - E) / h_sqrd);
+    double alpha = sqrt(2 * m * E / h_sqrd);
+    double B = C * exp(beta*-a) / cos(alpha*-a);
+    return -1 + wavefunction_03sqint(-a, C, beta) - wavefunction_02sqint(a, C, beta) + wavefunction_01sqint(a, 0, B, alpha) - wavefunction_01sqint(-a, 0, B, alpha);
+}
+double get_integral_odd(double C, double *params) {
+    double a = params[0];
+    double m = params[1];
+    double v_0 = params[2];
+    double E = params[3];
+    double beta = sqrt(2 * m * (v_0 - E) / h_sqrd);
+    double alpha = sqrt(2 * m * E / h_sqrd);
+    double A = C * exp(beta*-a) / sin(alpha*-a);
+    return -1 + wavefunction_03sqint(-a, C, beta) - wavefunction_02sqint(a, -C, beta) + wavefunction_01sqint(a, A, 0, alpha) - wavefunction_01sqint(-a, A, 0, alpha);
+}
