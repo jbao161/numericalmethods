@@ -9,14 +9,12 @@
 #include <float.h>
 #include <stdio.h>
 #include <cmath>
+#include "util_math.h"
 using namespace std;
 
 const bool DEBUG = true;
 
-bool isFiniteNumber(double x)
-{
-    return (x <= DBL_MAX && x >= -DBL_MAX);
-}
+
 
 /**
  * Bisection method for finding real roots to a continuous function of a single variable.

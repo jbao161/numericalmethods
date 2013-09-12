@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/1982670377/util_math.o \
 	${OBJECTDIR}/Polynomial.o \
 	${OBJECTDIR}/bisection.o \
 	${OBJECTDIR}/functions01.o \
@@ -66,6 +67,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/numericalmethods.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/numericalmethods ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/_ext/1982670377/util_math.o: /cygdrive/C/~Temp/koolplot1_2src/util_math.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1982670377
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1982670377/util_math.o /cygdrive/C/~Temp/koolplot1_2src/util_math.cpp
 
 ${OBJECTDIR}/Polynomial.o: Polynomial.cpp 
 	${MKDIR} -p ${OBJECTDIR}
