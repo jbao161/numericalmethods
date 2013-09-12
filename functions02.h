@@ -16,7 +16,7 @@ void convert_inputs(double[][2], double*);
 double wavefunction_01(double, double*);
 double wavefunction_02(double, double*);
 double get_sq_integral(double, double*);
-double get_A(double, double*);
+double get_D(double, double*);
 
 #endif	/* FUNCTIONS02_H */
 

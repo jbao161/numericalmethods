@@ -11,9 +11,9 @@
 
 using namespace std;
 const int max_iter = 1e4;
-const double TOL = 5e-8;
+const double TOL = 5e-16;
 const bool VERBOSE = false;
-
+const double hbar_sqrd = 0.076199682; // me ev nm^2
 void test01();
 int test02(double*, vector<double>&);
 void test03(double*, int);
@@ -39,8 +39,16 @@ void hw03_main() {
         double step = 0.01;
         for (int i = 0; i < num_eigenenergies; i++) {
             out_params[3] = energies.at(i);
-            D = bisect_params(get_sq_integral, out_params, 1e0, 1e8, max_iter, TOL);
-            A = get_A(D, out_params);
+            A = bisect_params(get_sq_integral, out_params, 0, 1e3, max_iter, TOL);
+            double m = out_params[0];
+            double L = out_params[1];
+            double v0 = out_params[2];
+            double E = out_params[3];
+            double alpha = sqrt(2 * m * E / hbar_sqrd);
+            double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
+            //A = sqrt(0.5 * L - 0.25 / alpha * sin(2 * alpha * L) + 0.5 / beta * pow(sin(alpha * L), 2)); vbcfg bvn
+
+            D = get_D(A, out_params);
             out_params[4] = A;
             out_params[5] = D;
             L = out_params[1];
