@@ -7,6 +7,7 @@
       <itemPath>bisection.h</itemPath>
       <itemPath>functions01.h</itemPath>
       <itemPath>hw02_main.h</itemPath>
+      <itemPath>hw03_main.h</itemPath>
       <itemPath>newton_raphson.h</itemPath>
       <itemPath>polynomial.h</itemPath>
       <itemPath>util_math.h</itemPath>
@@ -16,10 +17,11 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Main" projectFiles="true">
         <itemPath>hw02_main.cpp</itemPath>
+        <itemPath>hw03_main.cpp</itemPath>
         <itemPath>main.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="Math Utilities" projectFiles="true">
-        <itemPath>C:/~Temp/koolplot1_2src/util_math.cpp</itemPath>
+        <itemPath>util_math.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="Mathematical Objects" projectFiles="true">
         <itemPath>Polynomial.cpp</itemPath>
@@ -44,9 +46,6 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
-  <sourceRootList>
-    <Elem>../../../../../~Temp/koolplot1_2src</Elem>
-  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -61,11 +60,6 @@
           <commandLine>-ansi -pedantic</commandLine>
         </cTool>
       </compileType>
-      <item path="C:/~Temp/koolplot1_2src/util_math.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="Polynomial.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bisection.cpp" ex="false" tool="1" flavor2="0">
@@ -80,6 +74,10 @@
       </item>
       <item path="hw02_main.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="hw03_main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hw03_main.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="newton_raphson.cpp" ex="false" tool="1" flavor2="0">
@@ -87,6 +85,8 @@
       <item path="newton_raphson.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="polynomial.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_math.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="util_math.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -112,11 +112,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="C:/~Temp/koolplot1_2src/util_math.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="Polynomial.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bisection.cpp" ex="false" tool="1" flavor2="0">
@@ -131,6 +126,10 @@
       </item>
       <item path="hw02_main.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="hw03_main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hw03_main.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="newton_raphson.cpp" ex="false" tool="1" flavor2="0">
@@ -138,6 +137,8 @@
       <item path="newton_raphson.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="polynomial.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_math.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="util_math.h" ex="false" tool="3" flavor2="0">
       </item>

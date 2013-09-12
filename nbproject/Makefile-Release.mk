@@ -35,13 +35,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/1982670377/util_math.o \
 	${OBJECTDIR}/Polynomial.o \
 	${OBJECTDIR}/bisection.o \
 	${OBJECTDIR}/functions01.o \
 	${OBJECTDIR}/hw02_main.o \
+	${OBJECTDIR}/hw03_main.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/newton_raphson.o
+	${OBJECTDIR}/newton_raphson.o \
+	${OBJECTDIR}/util_math.o
 
 
 # C Compiler Flags
@@ -68,11 +69,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/numericalmethods.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/numericalmethods ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/1982670377/util_math.o: /cygdrive/C/~Temp/koolplot1_2src/util_math.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1982670377
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1982670377/util_math.o /cygdrive/C/~Temp/koolplot1_2src/util_math.cpp
-
 ${OBJECTDIR}/Polynomial.o: Polynomial.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -93,6 +89,11 @@ ${OBJECTDIR}/hw02_main.o: hw02_main.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/hw02_main.o hw02_main.cpp
 
+${OBJECTDIR}/hw03_main.o: hw03_main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/hw03_main.o hw03_main.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -102,6 +103,11 @@ ${OBJECTDIR}/newton_raphson.o: newton_raphson.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/newton_raphson.o newton_raphson.cpp
+
+${OBJECTDIR}/util_math.o: util_math.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/util_math.o util_math.cpp
 
 # Subprojects
 .build-subprojects:

@@ -7,6 +7,7 @@
 
 #include <cstdlib>
 #include "hw02_main.h"
+#include "hw03_main.h"
 
 using namespace std;
 
@@ -15,6 +16,6 @@ using namespace std;
  */
 int main(int argc, char** argv)
 {
-    hw02_main();
+    hw03_main();
     return 0;
 }
