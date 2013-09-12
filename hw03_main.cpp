@@ -6,13 +6,16 @@
 #include <cmath>
 #include <sstream>
 #include <fstream>
+#include <iomanip>
+#include "bisection.h"
+
 using namespace std;
 const int max_iter = 1e4;
 const double TOL = 5e-8;
-const bool VERBOSE = true;
+const bool VERBOSE = false;
 
 void test01();
-void test02(double*, vector<double>, int);
+int test02(double*, vector<double>&);
 void test03(double*, int);
 
 void hw03_main() {
@@ -28,23 +31,41 @@ void hw03_main() {
         double out_params[6];
         convert_inputs(in_params, out_params);
         vector<double> energies;
-        int num_eigenenergies = 0;
-        test02(out_params, energies, num_eigenenergies); // put the eigenvalues in outparams
+        int num_eigenenergies = test02(out_params, energies); // put the eigenvalues in outparams
         double A = 1; // wavefunction_01 coefficient
         double D = 1; // wavefunction_02 coefficient
         double L; // length of the well
+        // double v0 = out_params[2]; // potential of well
+        double step = 0.01;
         for (int i = 0; i < num_eigenenergies; i++) {
-            printf("%3.2f\r\n", num_eigenenergies);
             out_params[3] = energies.at(i);
+            D = bisect_params(get_sq_integral, out_params, 1e0, 1e8, max_iter, TOL);
+            A = get_A(D, out_params);
             out_params[4] = A;
             out_params[5] = D;
             L = out_params[1];
             ofstream datafile;
             stringstream stream;
-            stream << "dataplot(" << i << ").txt";
+            stream << "dataplot_" << i << ".txt";
             string fileName = stream.str();
-            datafile.open(fileName.c_str());
-            datafile << "hello\n";
+            datafile.open(fileName.c_str(), std::ios_base::trunc);
+            datafile << "m,L,v0,E,A,D: ";
+            for (int i = 0; i < 6; i++) {
+                datafile << out_params[i] << ",";
+            }
+            datafile << "\r\n";
+            for (double position = 0; position < L; position += step) {
+                datafile << std::fixed << std::setprecision(8) << position;
+                datafile << ",";
+                datafile << std::fixed << std::setprecision(8) << wavefunction_01(position, out_params);
+                datafile << "\r\n";
+            }
+            for (double position = L; position < 2 * L; position += step) {
+                datafile << std::fixed << std::setprecision(8) << position;
+                datafile << ",";
+                datafile << std::fixed << std::setprecision(8) << wavefunction_02(position, out_params);
+                datafile << "\r\n";
+            }
             datafile.close();
         }
 
@@ -73,7 +94,8 @@ void test01() {
 
 // finds the energy eigenvalues for ebb1, the half-infinite well
 
-void test02(double params[6], vector<double> energies, int num_eigenenergies) {
+int test02(double params[6], vector<double> & energies) {
+    int num_eigenenergies = 0;
     FILE *datafile;
     datafile = fopen("data01.txt", "wt");
     double step_percent = 0.01;
@@ -82,7 +104,7 @@ void test02(double params[6], vector<double> energies, int num_eigenenergies) {
     int count = 0;
     double lowerBound = 0;
     vector<pair<double, double> > root_bracket;
-    int num_of_brackets = 1;
+    int num_of_brackets = 0;
     double root;
     double f_E;
     double f_E_prev = energy_function(0, params);
@@ -96,7 +118,7 @@ void test02(double params[6], vector<double> energies, int num_eigenenergies) {
             bracket.second = energy;
             root_bracket.push_back(bracket);
             num_of_brackets = num_of_brackets + 1;
-            printf("num brackets: %3.2f\r\n", num_of_brackets);
+            // printf("num brackets: %d\r\n", num_of_brackets);
         }
         f_E_prev = f_E;
         if (VERBOSE) {
@@ -105,13 +127,13 @@ void test02(double params[6], vector<double> energies, int num_eigenenergies) {
         fprintf(datafile, "%3.8f,%3.8f\r\n", energy, energy_function(energy, params));
     }
     fclose(datafile);
-    printf("num brackets: %3.2f\r\n", num_of_brackets);
+
     for (int i = 0; i < num_of_brackets; i++) {
         root = newtonhybridp(energy_function, energy_function_d, params, root_bracket.at(i).first, root_bracket.at(i).second, max_iter, TOL, VERBOSE);
         energies.push_back(root);
         num_eigenenergies = num_eigenenergies + 1;
     }
-
+    return num_eigenenergies;
 }
 
 void test03(double* roots, int num_of_roots) {

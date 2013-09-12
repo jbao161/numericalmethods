@@ -12,9 +12,11 @@ double poly2test(double);
 double poly2test_d(double);
 double energy_function(double, double*);
 double energy_function_d(double, double*);
-void convert_inputs(double[][2],double*);
+void convert_inputs(double[][2], double*);
 double wavefunction_01(double, double*);
 double wavefunction_02(double, double*);
+double get_sq_integral(double, double*);
+double get_A(double, double*);
 
 #endif	/* FUNCTIONS02_H */
 

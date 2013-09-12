@@ -91,3 +91,27 @@ double wavefunction_02(double x, double *params) {
     return D * exp(-beta * x);
     ;
 }
+
+double get_sq_integral(double A, double *params) {
+    double m = params[0];
+    double L = params[1];
+    double v0 = params[2];
+    double E = params[3];
+    double alpha = sqrt(2 * m * E / hbar_sqrd);
+    double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
+    double D = D * exp(beta*-L) / sin(alpha*-L);
+    double integral_01 = A * A * (0.5 * L + sin(2 * alpha * L)*0.25 / alpha);
+    double integral_02 = -D * D * 0.5 / beta * exp(-2 * beta * L);
+    return -1 + integral_01 + integral_02;
+}
+
+double get_A(double D, double *params) {
+    double m = params[0];
+    double L = params[1];
+    double v0 = params[2];
+    double E = params[3];
+    double alpha = sqrt(2 * m * E / hbar_sqrd);
+    double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
+    double A = D * exp(beta*-L) / sin(alpha*-L);
+    return A;
+}
