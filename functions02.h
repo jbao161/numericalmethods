@@ -12,10 +12,9 @@ double poly2test(double);
 double poly2test_d(double);
 double energy_function(double, double*);
 double energy_function_d(double, double*);
-double convert_mass(double, double);
-double convert_energy(double, double);
-double convert_length(double, double);
 void convert_inputs(double[][2],double*);
+double wavefunction_01(double, double*);
+double wavefunction_02(double, double*);
 
 #endif	/* FUNCTIONS02_H */
 

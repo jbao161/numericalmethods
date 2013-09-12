@@ -12,7 +12,6 @@
 
 using namespace std;
 const bool DEBUG = true;
-const bool VERBOSE = true;
 
 /**
  * Newton-Raphson method for finding real roots to a continuous function of a single variable.
@@ -56,7 +55,7 @@ double newtonsolve(double (*function)(double), double (*fderivative)(double), do
         next_guess = initial_guess - f_x / derivative;
         convergence_criterion = abs((next_guess - initial_guess) / next_guess);
         initial_guess = next_guess;
-        if (VERBOSE) {
+        if (DEBUG) {
             printf("%3.12f\r\n", next_guess);
         }
     }
@@ -81,7 +80,7 @@ double newtonsolve(double (*function)(double), double (*fderivative)(double), do
  * 9. if the derivative dominates the function over the entire region, i.e. f(x)/df_dx(x) is close to zero, then convergence can be very slow!
  */
 
-double newtonhybrid(double (*function)(double), double (*fderivative)(double), double lowerBound, double upperBound, int max_iter, double TOL) {
+double newtonhybrid(double (*function)(double), double (*fderivative)(double), double lowerBound, double upperBound, int max_iter, double TOL, bool VERBOSE) {
     double precision; // half the length of the interval containing solution
     double functionBot = function(lowerBound);
     double functionTop = function(upperBound);
@@ -92,15 +91,15 @@ double newtonhybrid(double (*function)(double), double (*fderivative)(double), d
     double convergence_criterion = DBL_MAX; // the relative distance between successive approximations
 
     // verify that inputs are in fact the lower and upper bound of the solution
-    if (DEBUG) {
-        printf("\r\Hybrid search:\r\n");
+    if (VERBOSE) {
+        printf("\r\nHybrid search:\r\n");
         printf("initial guess: %3.2f\r\n", initial_guess);
         printf("f(%3.2f) = %3.2f\r\n", lowerBound, functionBot);
         printf("f(%3.2f) = %3.2f\r\n", upperBound, functionTop);
     }
     // function must be defined at the bounds, and its values must be of opposite sign
     if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop)) {
-        if (DEBUG) {
+        if (VERBOSE) {
             printf("invalid inputs: function must be defined at the bounds, and its values must be of opposite sign\r\n");
         }
         return DBL_MAX; // cannot find a root because of invalid inputs
@@ -112,7 +111,7 @@ double newtonhybrid(double (*function)(double), double (*fderivative)(double), d
         precision = (upperBound - lowerBound) / 2;
         // check if the function at the initial guess is sufficiently close to zero
         if (abs(f_x) < TOL || convergence_criterion < TOL) {
-            if (DEBUG) {
+            if (VERBOSE) {
                 printf("after %i iterations\r\n", i); // if initial guess is the solution, i=0
                 printf("solution: %3.12f with precision +/- %3.12f\r\n", initial_guess, precision);
                 printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess));
@@ -123,7 +122,7 @@ double newtonhybrid(double (*function)(double), double (*fderivative)(double), d
         derivative = fderivative(initial_guess);
         if (derivative == 0) // verify that the derivative is nonzero
         {
-            if (DEBUG) {
+            if (VERBOSE) {
                 printf("derivative at: %3.12f equals zero. Divide by zero error!\r\n", initial_guess);
             }
             return DBL_MAX; // cannot find a root due to divide by zero error!
@@ -146,7 +145,7 @@ double newtonhybrid(double (*function)(double), double (*fderivative)(double), d
             }
             next_guess = (upperBound + lowerBound) / 2;
             f_x = function(next_guess);
-            if (DEBUG) {
+            if (VERBOSE) {
                 printf("bisection step: guess = %3.8f, low = %3.8f, high = %3.8f.\r\n", next_guess, lowerBound, upperBound);
             }
             if (VERBOSE) {
@@ -172,7 +171,7 @@ double newtonhybrid(double (*function)(double), double (*fderivative)(double), d
         initial_guess = next_guess;
     }
     // unsuccessful search
-    if (DEBUG) {
+    if (VERBOSE) {
         printf("Method failed after %i iterations\r\n", max_iter);
         printf("inadequate solution: %3.12f with a tolerance of %3.12f\r\n", initial_guess, convergence_criterion);
         printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess));
@@ -180,26 +179,26 @@ double newtonhybrid(double (*function)(double), double (*fderivative)(double), d
     return DBL_MAX; // cannot find a root because exceeded max iterations
 }
 
-double newtonhybridp(double (*function)(double, double*), double (*fderivative)(double, double*), double *params,double lowerBound, double upperBound, int max_iter, double TOL) {
+double newtonhybridp(double (*function)(double, double*), double (*fderivative)(double, double*), double *params, double lowerBound, double upperBound, int max_iter, double TOL, bool VERBOSE) {
     double precision; // half the length of the interval containing solution
-    double functionBot = function(lowerBound,params);
-    double functionTop = function(upperBound,params);
+    double functionBot = function(lowerBound, params);
+    double functionTop = function(upperBound, params);
     double derivative, next_guess, midpoint;
     double initial_guess = (upperBound + lowerBound) / 2;
-    double f_x = function(initial_guess,params);
+    double f_x = function(initial_guess, params);
 
     double convergence_criterion = DBL_MAX; // the relative distance between successive approximations
 
     // verify that inputs are in fact the lower and upper bound of the solution
-    if (DEBUG) {
-        printf("\r\Hybrid search:\r\n");
+    if (VERBOSE) {
+        printf("\r\nHybrid search:\r\n");
         printf("initial guess: %3.2f\r\n", initial_guess);
         printf("f(%3.2f) = %3.2f\r\n", lowerBound, functionBot);
         printf("f(%3.2f) = %3.2f\r\n", upperBound, functionTop);
     }
     // function must be defined at the bounds, and its values must be of opposite sign
     if (isFiniteNumber(functionBot) == false || isFiniteNumber(functionTop) == false || signbit(functionBot) == signbit(functionTop)) {
-        if (DEBUG) {
+        if (VERBOSE) {
             printf("invalid inputs: function must be defined at the bounds, and its values must be of opposite sign\r\n");
         }
         return DBL_MAX; // cannot find a root because of invalid inputs
@@ -211,18 +210,18 @@ double newtonhybridp(double (*function)(double, double*), double (*fderivative)(
         precision = (upperBound - lowerBound) / 2;
         // check if the function at the initial guess is sufficiently close to zero
         if (abs(f_x) < TOL || convergence_criterion < TOL) {
-            if (DEBUG) {
+            if (VERBOSE) {
                 printf("after %i iterations\r\n", i); // if initial guess is the solution, i=0
                 printf("solution: %3.12f with precision +/- %3.12f\r\n", initial_guess, precision);
-                printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess,params));
+                printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess, params));
             }
             return initial_guess; // found a solution!
         }
         // otherwise calculate the derivative at the initial guess.
-        derivative = fderivative(initial_guess,params);
+        derivative = fderivative(initial_guess, params);
         if (derivative == 0) // verify that the derivative is nonzero
         {
-            if (DEBUG) {
+            if (VERBOSE) {
                 printf("derivative at: %3.12f equals zero. Divide by zero error!\r\n", initial_guess);
             }
             return DBL_MAX; // cannot find a root due to divide by zero error!
@@ -234,7 +233,7 @@ double newtonhybridp(double (*function)(double, double*), double (*fderivative)(
         if (!(next_guess > lowerBound & next_guess < upperBound)) {
 
             midpoint = (upperBound + lowerBound) / 2;
-            f_x = function(midpoint,params);
+            f_x = function(midpoint, params);
             if (signbit(functionBot) == signbit(f_x)) {
                 // solution is in the upper subinterval
                 lowerBound = midpoint;
@@ -244,8 +243,8 @@ double newtonhybridp(double (*function)(double, double*), double (*fderivative)(
                 upperBound = midpoint;
             }
             next_guess = (upperBound + lowerBound) / 2;
-            f_x = function(next_guess,params);
-            if (DEBUG) {
+            f_x = function(next_guess, params);
+            if (VERBOSE) {
                 printf("bisection step: guess = %3.8f, low = %3.8f, high = %3.8f.\r\n", next_guess, lowerBound, upperBound);
             }
             if (VERBOSE) {
@@ -253,7 +252,7 @@ double newtonhybridp(double (*function)(double, double*), double (*fderivative)(
             }
         }// if newton approximation is good, just update the bounds
         else {
-            f_x = function(next_guess,params);
+            f_x = function(next_guess, params);
             if (signbit(functionBot) == signbit(f_x)) {
                 // solution is in the upper subinterval
                 lowerBound = next_guess;
@@ -271,10 +270,10 @@ double newtonhybridp(double (*function)(double, double*), double (*fderivative)(
         initial_guess = next_guess;
     }
     // unsuccessful search
-    if (DEBUG) {
+    if (VERBOSE) {
         printf("Method failed after %i iterations\r\n", max_iter);
         printf("inadequate solution: %3.12f with a tolerance of %3.12f\r\n", initial_guess, convergence_criterion);
-        printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess,params));
+        printf("f(%3.12f) = %3.12f\r\n", initial_guess, function(initial_guess, params));
     }
     return DBL_MAX; // cannot find a root because exceeded max iterations
 }

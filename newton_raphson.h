@@ -9,8 +9,8 @@
 #define	NEWTON_RAPHSON_H
 
 double newtonsolve(double (*function)(double), double (*fderivative)(double), double, int, double);
-double newtonhybrid(double (*function)(double), double (*fderivative)(double), double, double, int, double);
-double newtonhybridp(double (*function)(double, double*), double (*fderivative)(double, double*), double*, double, double, int, double);
+double newtonhybrid(double (*function)(double), double (*fderivative)(double), double, double, int, double, bool);
+double newtonhybridp(double (*function)(double, double*), double (*fderivative)(double, double*), double*, double, double, int, double, bool);
 
 #endif	/* NEWTON_RAPHSON_H */
 

@@ -35,9 +35,9 @@ double convert_energy(double erg, double exponent) {
 }
 
 double convert_length(double angstrom, double exponent) {
-    exponent -= 8;
-    double centimeter = angstrom * pow(10, exponent);
-    return centimeter;
+    exponent -= 1;
+    double nanometer = angstrom * pow(10, exponent);
+    return nanometer;
 }
 // convert the units gram, angstrom, and ergs into electron mass, centimeter, and electron volt
 
@@ -53,26 +53,14 @@ void convert_inputs(double in_params[][2], double* out_params) {
 
 }
 
-void convert_params_in(double *params) {
-    params[0] *= 1e-23; // from 1e-27 g to 1e-4 in (1e-23 of a gram))
-    params[1] *= 1e-2; // from 2e-8 cm to 1e-6 (in .01 of cm)
-    params[2] *= 1e-13; // from 1e-13 to 1e0 (in 1e-13 of an erg)
-}
-
-void convert_params_out(double *params) {
-    params[0] *= 1e23; // to 1e-27 g from 1e-4 in (1e-23 of a gram))
-    params[1] *= 1e2; // to 2e-8 cm from 1e-6 (in .01 of cm)
-    params[2] *= 1e13; // to 1e-13 from 1e0 (in 1e-13 of an erg)
-}
-
 double energy_function(double E, double *params) {
-    double m = params[0]; // in (1e-23 of a gram)
-    double L = params[1]; // in (.01 of a cm)
-    double v0 = params[2]; // (in 1e-13 of an erg)
-    double Lk = L * sqrt(2 * m * E / hbar_sqrd);
-    double k = sqrt(2 * m * E / hbar_sqrd);
-    double lambda = sqrt(2 * m * (v0 - E) / hbar_sqrd);
-    return k * cos(Lk) - lambda * sin(Lk);
+    double m = params[0]; // in electron mass
+    double L = params[1]; // in nanometer
+    double v0 = params[2]; // in electron volt    
+    double alpha = sqrt(2 * m * E / hbar_sqrd);
+    double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
+    double alpha_L = alpha * L;
+    return alpha * cos(alpha_L) - beta * sin(alpha_L);
     //sin(Lk) + sqrt(E / (v0 - E)) * cos(Lk);
 }
 
@@ -80,7 +68,26 @@ double energy_function_d(double E, double *params) {
     double m = params[0];
     double L = params[1];
     double v0 = params[2];
-    double Lk = L * sqrt(2 * m * E / hbar_sqrd);
-    double ddk = sqrt(2 * m / hbar_sqrd) / 2 * pow(E, -0.5);
-    return L * cos(Lk) + sqrt(E / (v0 - E)) * cos(Lk);
+    double alpha_L = L * sqrt(2 * m * E / hbar_sqrd);
+    double dd_alpha = sqrt(2 * m / hbar_sqrd) / 2 * pow(E, -0.5);
+    double dd_coef = 0.5 * pow((E / (v0 - E)), -0.5) * v0 / pow(v0 - E, 2);
+    return dd_alpha * (L * cos(alpha_L) + sqrt(E / (v0 - E)) * -L * sin(alpha_L)) + dd_coef * cos(alpha_L);
+}
+
+double wavefunction_01(double x, double *params) {
+    double m = params[0];
+    double E = params[3];
+    double A = params[4];
+    double alpha = sqrt(2 * m * E / hbar_sqrd);
+    return A * sin(alpha * x);
+}
+
+double wavefunction_02(double x, double *params) {
+    double m = params[0];
+    double v0 = params[2];
+    double E = params[3];
+    double D = params[5];
+    double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
+    return D * exp(-beta * x);
+    ;
 }
