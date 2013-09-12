@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Polynomial.o \
 	${OBJECTDIR}/bisection.o \
 	${OBJECTDIR}/functions01.o \
+	${OBJECTDIR}/functions02.o \
 	${OBJECTDIR}/hw02_main.o \
 	${OBJECTDIR}/hw03_main.o \
 	${OBJECTDIR}/main.o \
@@ -83,6 +84,11 @@ ${OBJECTDIR}/functions01.o: functions01.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/functions01.o functions01.cpp
+
+${OBJECTDIR}/functions02.o: functions02.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/functions02.o functions02.cpp
 
 ${OBJECTDIR}/hw02_main.o: hw02_main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
