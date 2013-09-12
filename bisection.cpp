@@ -81,7 +81,7 @@ double bisect(double (*function)(double), double lowerBound, double upperBound, 
         {
             // use the upper subinterval
             lowerBound = midpoint;
-            functionBot = functionMidpoint;
+            functionBot = functionMidpoint; // we only compare using the function bot sign, so don't need to update functionTop
         }
         else
         {

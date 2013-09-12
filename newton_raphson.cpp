@@ -77,13 +77,14 @@ double newtonsolve(double (*function)(double), double (*fderivative)(double), do
  */
 
 double hybridnewton(double (*function)(double), double *params, double (*fderivative)(double), double lowerBound, double upperBound, int max_iter, double TOL) {
-    double midpoint;
     double precision; // half the length of the interval containing solution
     double functionMidpoint;
     double functionBot = function(lowerBound);
     double functionTop = function(upperBound);
-    double f_x, derivative, next_guess;
+    double derivative, next_guess;
     double initial_guess = (upperBound + lowerBound) / 2;
+    double f_x = function(initial_guess);
+
     double convergence_criterion = DBL_MAX; // the relative distance between successive approximations
 
     // verify that inputs are in fact the lower and upper bound of the solution
@@ -100,13 +101,12 @@ double hybridnewton(double (*function)(double), double *params, double (*fderiva
         return DBL_MAX; // cannot find a root because of invalid inputs
     }
 
-    // search for the solution using Newton-Raphson method
+    // search for the solution using hybrid method
     for (int i = 0; i <= max_iter; i++) // i<= maxIter because results of nth iteration are not checked until the n+1th
     {
         precision = (upperBound - lowerBound) / 2;
-        f_x = function(initial_guess);
         // check if the function at the initial guess is sufficiently close to zero
-        if (f_x == 0 || convergence_criterion < TOL) {
+        if (abs(f_x) < TOL || convergence_criterion < TOL) {
             if (DEBUG) {
                 printf("after %i iterations\r\n", i); // if initial guess is the solution, i=0
                 printf("solution: %3.12f with precision +/- %3.12f\r\n", initial_guess, precision);
@@ -123,26 +123,28 @@ double hybridnewton(double (*function)(double), double *params, double (*fderiva
             }
             return DBL_MAX; // cannot find a root due to divide by zero error!
         }
-        // update the initial guess and convergence criterion
+        // determine the next approximation
         next_guess = initial_guess - f_x / derivative;
-        convergence_criterion = abs((next_guess - initial_guess) / next_guess);
-        initial_guess = next_guess;
+        // if the next approximation goes outside the bounds, take a bisection step
         if (!(next_guess > lowerBound & next_guess < upperBound)) {
-            // compute midpoint and f(midpoint)
-            midpoint = (upperBound + lowerBound) / 2;
-            functionMidpoint = function(midpoint);
-            // bisect the interval and determine which half contains the solution
-            if (signbit(functionBot) == signbit(functionMidpoint)) {
-                // use the upper subinterval
-                lowerBound = midpoint;
-                functionBot = functionMidpoint;
-            } else {
-                // use the lower subinterval
-                upperBound = midpoint;
-            }
-            initial_guess = midpoint; // the next input to the Newton method is a midpoint in the correct half interval
+            // compute midpoint
+            next_guess = (upperBound + lowerBound) / 2;
+        }
+        // or if newton approximation is good, just update the bounds
+        f_x = function(next_guess);
+        if (signbit(functionBot) == signbit(f_x)) {
+            // solution is in the upper subinterval
+            lowerBound = next_guess;
+            functionBot = f_x;
+        } else {
+            // solution is in the lower subinterval
+            upperBound = next_guess;
         }
     }
+    convergence_criterion = abs((next_guess - initial_guess) / next_guess);
+    // set the initial guess for the next iteration
+    initial_guess = next_guess;
+
     // unsuccessful search
     if (DEBUG) {
         printf("Method failed after %i iterations\r\n", max_iter);
