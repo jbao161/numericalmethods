@@ -22,36 +22,37 @@ void hw03_main() {
     if (false) {
         test01();
     }
-    if (true) {
-        double in_params[3][2] = {
-            {1, -27},
-            {20, 0},
-            {15, -13}
-        };
-        double out_params[6];
-        convert_inputs(in_params, out_params);
-        vector<double> energies;
-        int num_eigenenergies = test02(out_params, energies); // put the eigenvalues in outparams
-        double A = 1; // wavefunction_01 coefficient
-        double D = 1; // wavefunction_02 coefficient
-        double L; // length of the well
-        // double v0 = out_params[2]; // potential of well
-        double step = 0.01;
-        for (int i = 0; i < num_eigenenergies; i++) {
-            out_params[3] = energies.at(i);
-            A = bisect_params(get_sq_integral, out_params, 0, 1e3, max_iter, TOL);
-            double m = out_params[0];
-            double L = out_params[1];
-            double v0 = out_params[2];
-            double E = out_params[3];
-            double alpha = sqrt(2 * m * E / hbar_sqrd);
-            double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
-            //A = sqrt(0.5 * L - 0.25 / alpha * sin(2 * alpha * L) + 0.5 / beta * pow(sin(alpha * L), 2)); vbcfg bvn
 
-            D = get_D(A, out_params);
-            out_params[4] = A;
-            out_params[5] = D;
-            L = out_params[1];
+    double in_params[3][2] = {
+        {1, -27},
+        {20, 0},
+        {15, -13}
+    };
+    double out_params[6];
+    convert_inputs(in_params, out_params);
+    vector<double> energies;
+    int num_eigenenergies = test02(out_params, energies); // put the eigenvalues in outparams
+    double A = 1; // wavefunction_01 coefficient
+    double D = 1; // wavefunction_02 coefficient
+    double L; // length of the well
+    // double v0 = out_params[2]; // potential of well
+    double step = 0.01;
+    for (int i = 0; i < num_eigenenergies; i++) {
+        out_params[3] = energies.at(i);
+        A = bisect_params(get_sq_integral, out_params, 0, 1e3, max_iter, TOL);
+        double m = out_params[0];
+        double L = out_params[1];
+        double v0 = out_params[2];
+        double E = out_params[3];
+        double alpha = sqrt(2 * m * E / hbar_sqrd);
+        double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
+        //A = sqrt(0.5 * L - 0.25 / alpha * sin(2 * alpha * L) + 0.5 / beta * pow(sin(alpha * L), 2)); vbcfg bvn
+
+        D = get_D(A, out_params);
+        out_params[4] = A;
+        out_params[5] = D;
+        L = out_params[1];
+        if (false) {
             ofstream datafile;
             stringstream stream;
             stream << "dataplot_" << i << ".txt";
@@ -81,7 +82,17 @@ void hw03_main() {
 
     }
     if (true) {
-
+        // we need to solve for an energy eigenvalue = potential.
+        // i.e. let E = v0,  then find L.
+        //bisect_params(energy_function_L, out_params, 0, 10, max_iter, TOL);
+        // populate a list of graphs and count for each graphs the number of roots.
+        // if the number hits 4 we're going to bisect that interval using the return function as the discrete number of counts
+        // we can't use tolerance to stop iteration because many solutions will be exactly equal to 4, so we just need to keep iterating for a fixed number of attempts
+        // OR, we can find the location of the root close to v0 and calculate its distance from v0 and use that as the convergence criterion
+        double step_L = 0.1;
+        for (double length = 0 ; length < L; length += step_L){
+            
+        }
     }
 }
 

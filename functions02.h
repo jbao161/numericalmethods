@@ -17,6 +17,8 @@ double wavefunction_01(double, double*);
 double wavefunction_02(double, double*);
 double get_sq_integral(double, double*);
 double get_D(double, double*);
+double energy_function_L(double, double*);
+double energy_function_v0(double, double*);
 
 #endif	/* FUNCTIONS02_H */
 
