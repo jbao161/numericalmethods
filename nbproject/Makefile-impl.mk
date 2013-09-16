@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=numericalmethods
+PROJECTNAME=NumericalMethods
 
 # Active Configuration
 DEFAULTCONF=Debug
