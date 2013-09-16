@@ -64,30 +64,6 @@ double energy_function(double E, double *params) {
     //sin(Lk) + sqrt(E / (v0 - E)) * cos(Lk);
 }
 
-double energy_function_L(double L, double *params) {
-    double m = params[0]; // in electron mass
-    double E = params[3]; // in nanometer
-    double v0 = params[2]; // in electron volt    
-    double alpha = sqrt(2 * m * E / hbar_sqrd); // this quantity is known
-    double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
-    //double beta = 0; // since v0 = e
-    double alpha_L = alpha * L;
-    // need to solve 0 = cos (alpha * L) for L
-    return alpha * cos(alpha_L) + beta * sin(alpha_L);
-    //sin(Lk) + sqrt(E / (v0 - E)) * cos(Lk);
-}
-
-double energy_function_v0(double v0, double *params) {
-    double m = params[0]; // in electron mass
-    double E = params[3]; // in nanometer
-    double L = params[1]; // in electron volt    
-    double alpha = sqrt(2 * m * E / hbar_sqrd);
-    double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
-    double alpha_L = alpha * L;
-    return alpha * cos(alpha_L) + beta * sin(alpha_L);
-    //sin(Lk) + sqrt(E / (v0 - E)) * cos(Lk);
-}
-
 double energy_function_d(double E, double *params) {
     double m = params[0];
     double L = params[1];
