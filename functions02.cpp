@@ -117,3 +117,40 @@ double get_D(double A, double *params) {
 
     return D;
 }
+
+double get_distance(double L, double *params, int num_energies) {
+    // for a given L, start plotting the energy function until the specified number of energy roots are found
+    {
+        int num_eigenenergies = 0;
+
+        double step_percent = 0.01;
+        double potential = params[2];
+        double step = potential * step_percent;
+        int count = 0;
+        double lowerBound = 0;
+        int num_of_brackets = 0;
+        double bracket_first, bracket_second;
+        double root;
+        double f_E;
+        double f_E_prev = energy_function(0, params);
+        for (double energy = step; energy < potential; energy += step) {
+            f_E = energy_function(energy, params);
+            if (signbit(f_E) != signbit(f_E_prev)) {
+                count++;
+                lowerBound = energy - step;
+                bracket_first = lowerBound;
+                bracket_second = energy;
+                num_of_brackets = num_of_brackets + 1;
+                // printf("num brackets: %d\r\n", num_of_brackets);
+            }
+            f_E_prev = f_E;
+            if (false) {
+                printf("energy: %3.8f ; function: %3.8f\r\n", energy, f_E);
+            }
+        }
+        // bisection search with each increment step that changes sign
+    }
+    // if there aren't at least that many found, return null = double.min
+    // if there are more than that many, return double.max
+    // return the distance of the energy root from v_0 the potential
+}
