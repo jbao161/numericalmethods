@@ -154,3 +154,14 @@ double get_distance(double L, double *params, int num_energies) {
     // if there are more than that many, return double.max
     // return the distance of the energy root from v_0 the potential
 }
+
+double energy_function_L(double L, double *params) {
+    double m = params[0]; // in electron mass
+    double E = params[3]; // in nanometer
+    double v0 = params[2]; // in electron volt    
+    double alpha = sqrt(2 * m * E / hbar_sqrd);
+    double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
+    double alpha_L = alpha * L;
+    return alpha * cos(alpha_L) + beta * sin(alpha_L);
+    //sin(Lk) + sqrt(E / (v0 - E)) * cos(Lk);
+}
