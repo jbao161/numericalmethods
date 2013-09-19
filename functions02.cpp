@@ -1,5 +1,9 @@
 #include <math.h>
 #include <stdio.h>
+#include "newton_raphson.h"
+const int max_iter = 1e4;
+const double TOL = 5e-16;
+const bool VERBOSE = false;
 const double hbar_sqrd = 0.076199682; // me ev nm^2
 const bool DEBUG = true;
 // 6.62606957e-27 erg * second = g* cm^2 / s
@@ -133,14 +137,19 @@ double get_distance(double L, double *params, int num_energies) {
         double root;
         double f_E;
         double f_E_prev = energy_function(0, params);
+        double highest_energy;
+        params[1] = L;
         for (double energy = step; energy < potential; energy += step) {
             f_E = energy_function(energy, params);
             if (signbit(f_E) != signbit(f_E_prev)) {
                 count++;
-                lowerBound = energy - step;
-                bracket_first = lowerBound;
-                bracket_second = energy;
-                num_of_brackets = num_of_brackets + 1;
+                if (count == num_energies) {
+                    lowerBound = energy - step;
+                    bracket_first = lowerBound;
+                    bracket_second = energy;
+                    num_of_brackets = num_of_brackets + 1;
+                    highest_energy = newtonhybridp(energy_function, energy_function_d, params, bracket_first, bracket_second, max_iter, TOL, VERBOSE);
+                }
                 // printf("num brackets: %d\r\n", num_of_brackets);
             }
             f_E_prev = f_E;
@@ -148,6 +157,22 @@ double get_distance(double L, double *params, int num_energies) {
                 printf("energy: %3.8f ; function: %3.8f\r\n", energy, f_E);
             }
         }
+        // printf("length: %3.8f\r\n", L);
+        // printf("# roots: %d\r\n", count);
+        double distance = -1;
+        if (count == num_energies) {
+            distance = (potential - highest_energy);
+        }
+        printf("%3.8f,%d,%3.8f\r\n", L, count, distance);
+        if (count > num_energies) {
+            return -1;
+        }
+        if (count < num_energies) {
+            return -2;
+        }
+
+
+        return (potential - highest_energy);
         // bisection search with each increment step that changes sign
     }
     // if there aren't at least that many found, return null = double.min

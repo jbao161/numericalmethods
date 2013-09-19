@@ -8,6 +8,7 @@
       <itemPath>functions01.h</itemPath>
       <itemPath>functions02.h</itemPath>
       <itemPath>hw02_main.h</itemPath>
+      <itemPath>hw03_ebb2_main.h</itemPath>
       <itemPath>hw03_main.h</itemPath>
       <itemPath>newton_raphson.h</itemPath>
       <itemPath>polynomial.h</itemPath>
@@ -18,6 +19,7 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Main" projectFiles="true">
         <itemPath>hw02_main.cpp</itemPath>
+        <itemPath>hw03_ebb2_main.cpp</itemPath>
         <itemPath>hw03_main.cpp</itemPath>
         <itemPath>main.cpp</itemPath>
       </logicalFolder>
@@ -80,6 +82,10 @@
       </item>
       <item path="hw02_main.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="hw03_ebb2_main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hw03_ebb2_main.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="hw03_main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="hw03_main.h" ex="false" tool="3" flavor2="0">
@@ -135,6 +141,10 @@
       <item path="hw02_main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="hw02_main.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="hw03_ebb2_main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hw03_ebb2_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="hw03_main.cpp" ex="false" tool="1" flavor2="0">
       </item>
