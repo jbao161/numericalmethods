@@ -21,7 +21,7 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=Cygwin_4.x-Windows
+CND_PLATFORM=Cygwin-Windows
 CND_DLIB_EXT=dll
 CND_CONF=Debug
 CND_DISTDIR=dist
@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/functions01.o \
 	${OBJECTDIR}/functions02.o \
 	${OBJECTDIR}/hw02_main.o \
+	${OBJECTDIR}/hw03_ebb2_main.o \
 	${OBJECTDIR}/hw03_main.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/newton_raphson.o \
@@ -94,6 +95,11 @@ ${OBJECTDIR}/hw02_main.o: hw02_main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/hw02_main.o hw02_main.cpp
+
+${OBJECTDIR}/hw03_ebb2_main.o: hw03_ebb2_main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/hw03_ebb2_main.o hw03_ebb2_main.cpp
 
 ${OBJECTDIR}/hw03_main.o: hw03_main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

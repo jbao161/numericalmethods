@@ -20,6 +20,54 @@ int test02(double*, vector<double>&);
 void test03();
 void test04(int);
 
+double get_vvp(double potential, double *params, int num_energies) {
+    // for a given L, start plotting the energy function until the specified number of energy roots are found
+    params[2] = potential;
+    double step_percent = 0.01;
+    double step = potential * step_percent;
+    int count = 0;
+    double lowerBound = 0;
+    int num_of_brackets = 0;
+    double bracket_first, bracket_second;
+    double root;
+    double f_E;
+    double f_E_prev = energy_function(0, params);
+    double highest_energy;
+    for (double energy = step; energy < potential; energy += step) {
+        f_E = energy_function(energy, params);
+        if (signbit(f_E) != signbit(f_E_prev)) {
+            count++;
+            if (count == num_energies) {
+                lowerBound = energy - step;
+                bracket_first = lowerBound;
+                bracket_second = energy;
+                num_of_brackets = num_of_brackets + 1;
+                highest_energy = newtonhybridp(energy_function, energy_function_d, params, bracket_first, bracket_second, max_iter, TOL, VERBOSE);
+            }
+            // printf("num brackets: %d\r\n", num_of_brackets);
+        }
+        f_E_prev = f_E;
+        if (false) {
+            printf("energy: %3.8f ; function: %3.8f\r\n", energy, f_E);
+        }
+    }
+    // printf("length: %3.8f\r\n", L);
+    // printf("# roots: %d\r\n", count);
+    double distance = -1;
+    if (count == num_energies) {
+        distance = (potential - highest_energy);
+    }
+    printf("%3.8f,%d,%3.8f\r\n", potential, count, distance);
+    if (count > num_energies) {
+        return -1;
+    }
+    if (count < num_energies) {
+        return -2;
+    }
+    return (potential - highest_energy);
+    // bisection search with each increment step that changes sign
+}
+
 void hw03_main() {
     if (false) {
         test01();
@@ -106,26 +154,29 @@ void test03() {
     convert_inputs(in_params, out_params);
     vector<double> energies;
     int num_eigenenergies = test02(out_params, energies); // put the eigenvalues in outparams
-    double A = 1; // wavefunction_01 coefficient
-    double D = 1; // wavefunction_02 coefficient
+    double A; // wavefunction_01 coefficient
+    double D; // wavefunction_02 coefficient
     double L; // length of the well
     // double v0 = out_params[2]; // potential of well
     double step = 0.01;
     for (int i = 0; i < num_eigenenergies; i++) {
         out_params[3] = energies.at(i);
-        A = bisect_params(get_sq_integral, out_params, 0, 1e3, max_iter, TOL);
+
         double m = out_params[0];
         double L = out_params[1];
         double v0 = out_params[2];
         double E = out_params[3];
         double alpha = sqrt(2 * m * E / hbar_sqrd);
         double beta = sqrt(2 * m * (v0 - E) / hbar_sqrd);
-        //A = sqrt(0.5 * L - 0.25 / alpha * sin(2 * alpha * L) + 0.5 / beta * pow(sin(alpha * L), 2)); vbcfg bvn
-
-        D = get_D(A, out_params);
+        A = bisect_params(get_sq_integral, out_params, 0, 1e3, max_iter, TOL);
         out_params[4] = A;
+        D = get_D(A, out_params);
+        //printf("D: %3.8f\r\n", D);
+
         out_params[5] = D;
+
         L = out_params[1];
+        //printf("L: %3.20f\r\n", L);
         if (true) {
             ofstream datafile;
             stringstream stream;
@@ -151,24 +202,36 @@ void test03() {
             }
             datafile.close();
         }
-
-
-
     }
-    if (true) {
-        // we need to solve for an energy eigenvalue = potential.
-        // i.e. let E = v0,  then find L.
-        //bisect_params(energy_function_L, out_params, 0, 10, max_iter, TOL);
-        // populate a list of graphs and count for each graphs the number of roots.
-        // if the number hits 4 we're going to bisect that interval using the return function as the discrete number of counts
-        // we can't use tolerance to stop iteration because many solutions will be exactly equal to 4, so we just need to keep iterating for a fixed number of attempts
-        // OR, we can find the location of the root close to v0 and calculate its distance from v0 and use that as the convergence criterion
-        double step_L = 0.1;
-        for (double length = 0; length < L; length += step_L) {
 
-        }
+    L = out_params[1];
+    //printf("L: %3.20f\r\n", L);
+    // we need to solve for an energy eigenvalue = potential.
+    // i.e. let E = v0,  then find L.
+    //bisect_params(energy_function_L, out_params, 0, 10, max_iter, TOL);
+    // populate a list of graphs and count for each graphs the number of roots.
+    // if the number hits 4 we're going to bisect that interval using the return function as the discrete number of counts
+    // we can't use tolerance to stop iteration because many solutions will be exactly equal to 4, so we just need to keep iterating for a fixed number of attempts
+    // OR, we can find the location of the root close to v0 and calculate its distance from v0 and use that as the convergence criterion
+    double step_L = 0.1;
+    double distance;
+    // distance search
+    for (double length = 2.72; length < 2.73; length += .001) {
+        distance = get_distance(length, out_params, 5);
+        //printf("distance: %3.8f\r\n", distance);
     }
+
+    // potential search
+    out_params[1] = L;
+    double v0 = out_params[2];
+    for (double pt = 1.6; pt < 2.7; pt += 0.01) {
+        distance = get_vvp(pt, out_params, 5);
+        //printf("distance: %3.8f\r\n", distance);
+    }
+
+
 }
+
 
 void do_test03(double L_input) {
     double in_params[3][2] = {
@@ -257,7 +320,7 @@ int find_roots(double params[6], vector<double> & energies) {
     double root;
     double f_E;
     double f_E_prev = energy_function(0, params);
-    for (double energy = step; energy < potential; energy += step) {
+    for (double energy = 0; energy < potential; energy += step) {
         f_E = energy_function(energy, params);
         if (signbit(f_E) != signbit(f_E_prev)) {
             count++;
@@ -267,7 +330,7 @@ int find_roots(double params[6], vector<double> & energies) {
             bracket.second = energy;
             root_bracket.push_back(bracket);
             num_of_brackets = num_of_brackets + 1;
-            // printf("num brackets: %d\r\n", num_of_brackets);
+            printf("lower bound: %3.8f, upper bound: %3.8f\r\n", lowerBound, energy);
         }
         f_E_prev = f_E;
         if (VERBOSE) {
