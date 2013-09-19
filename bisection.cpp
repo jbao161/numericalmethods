@@ -12,7 +12,7 @@
 #include "util_math.h"
 using namespace std;
 
-const bool DEBUG = true;
+const bool DEBUG = false;
 
 
 
